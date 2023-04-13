@@ -1,0 +1,18 @@
+h1{
+    padding-top: 20px;
+    padding-left: 20px;
+    color: #192252;
+}
+.body{
+    margin: 20px;
+    width: 100% !important ;
+}
+.row{
+    width: 100% !important ;
+}
+.data{
+    border-width: 1;
+    border-color: #A9B4CD;
+    border-style:solid ;
+    border-radius: 10px;
+}

@@ -1,97 +1,36 @@
-<!DOCTYPE html>
-<html>
+<main class="TheBody">
+    <div class="con1 container p-0 ">
+        <div class="searchContainer py-0">
 
-<head>
-  <title>Doctor-Patient Appointments</title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
-</head>
-
-<body>
-  <header class="sticky-top" style="background-color: white;">
-    <div class="navbar-container">
-      <div class="navbar-container-part1">
-        <div class=" navbar-logo-container py-3 px-5">
-          <img src="../../assets/logo.png" class="navbar-logo-img">
-          <div class="navbar-logo-title">AppointmentEase</div>
+            <div class="row">
+                <div class="col-6 coll1">
+                    <div class="searchTitle pb-3">Find the Right Medical Solutions with AppointmentEase <br> Chat with Our AI Assistant Today!</div>
+                  
+                </div>
+            
+            </div>
+           
+         
+            
+ <app-chat-component></app-chat-component>
         </div>
-        <div class="navbar-routerPanel">
-          <div class="px-3">Home</div>
-          <div class="px-3">Doctors</div>
-          <div class="px-3">Services</div>
-          <div class="px-3">Gallery</div>
-          <div class="px-3">Blog</div>
+        <div class="container m-0 p-0">
+            
+            <div class="services-Container">
+                <div class="services-carrousel" >
+                    <div class="serviceTemplate" *ngFor="let service of services">
+                        <img src="{{service.serviceImage}}" width="40" alt="">
+                        {{service.serviceName}}</div> 
+                        
+                </div>
+             
+                <div class=" services-Expand mt-0">See All Services<fa-icon [icon]="faCaretDown" class="contactList-icon mx-auto mb-1"></fa-icon></div>
+            </div>
         </div>
-      </div>
-      <button class="navbar-container-loginbtn"> <fa-icon [icon]="faPersonWalkingArrowRight"
-          style="padding-right: 3px;"></fa-icon> login</button>
+
+
     </div>
-  </header>
-  <main class="py-5 bg-light">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <h2 class="mb-4">Book an Appointment</h2>
-          <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquam justo vel augue mollis,
-            sit amet ullamcorper risus tempor. Sed varius eleifend sem, ac blandit nisl.</p>
-          <button class="btn btn-lg btn-primary">Book Now</button>
-        </div>
-        <div class="col-md-6">
-          <img src="https://via.placeholder.com/500x400" alt="Doctor and Patient" class="img-fluid">
-        </div>
-      </div>
-    </div>
-  </main>
-  <footer class="bg-dark py-3 footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-4 py-5" style="    display: flex;flex-direction: column;justify-content: space-between;">
-          <div class="footer-websiteTitle "><img src="../../assets/logo.png" class="footer-websiteTitle-icon">
-            <div class="footer-websiteTitle-text">AppointmentEase</div>
-          </div>
-          <p class="footer-websiteDescription ">Book appointments with trusted healthcare providers on our
-            user-friendly platform.
-            We prioritize your well-being and offer a stress-free experience. Thank you for choosing us.</p>
-          <div class="footer-Icons1-container">
-            <div class="footer-Icons1"><fa-icon class="footer-Icons1-img" [icon]="faFacebook"></fa-icon></div>
-            <div class="footer-Icons1"><fa-icon class="footer-Icons1-img" [icon]="faInstagram"></fa-icon></div>
-            <div class="footer-Icons1"><fa-icon class="footer-Icons1-img" [icon]="faYoutube"></fa-icon></div>
-          </div>
-        </div>
-        <div class="col-4 py-5 px-5">
-          <div class="Footer-h1">
-            <div class="Footer-h1">Popular Services</div>
-            <div class="Footer-h1-banner"></div>
-          </div>
-          <div>
-            <ul class="list-group Footer-service-list">
-              <li>General check-ups</li>
-              <li>Vaccinations and immunizations</li>
-              <li>Diagnosis and treatment</li>
-              <li>Preventive care and health screenings</li>
-              <li>Women's health services</li>
+    <div class="background"></div>
 
-            </ul>
-          </div>
-        </div>
-        <div class="col-4 py-5">
-          <div class="Footer-h1">
-            <div class="Footer-h1">Contact Info</div>
-            <div class="Footer-h1-banner"></div>
-          </div>
-          <div class="contactList">
-            <div class="contactList-text"><fa-icon [icon]="faPhone" class="contactList-icon"></fa-icon>+216 99 999 999</div>
-            <div class="contactList-text"><fa-icon [icon]="faEnvelope" class="contactList-icon"></fa-icon>Support@AppointmentEase.com</div>
-            <div class="contactList-text"><fa-icon [icon]="faLocationDot" class="contactList-icon"></fa-icon>29 Ghana Street, Tunis, Tunisia, 1017</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container ">
-      <p class="text-white text-center">&copy; 2023 Doctor-Patient Appointments. All rights reserved.</p>
-    </div>
-  </footer>
-
-</body>
-
-</html>
+</main>
