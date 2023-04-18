@@ -7,13 +7,13 @@ interface patientData{
   data: number
 }
 const getpatientdata: Observable<patientData[]> = of([{
-  name:"Treatment",data:50},{
-  name:"Check-up",data: 10},{
-  name:"operation2",data: 5
+  name:"Treatment",data:56},{
+  name:"Check-up",data: 21},{
+  name:"operation2",data: 15
 },{
-  name:"operation2",data: 5
+  name:"operation2",data: 52
 },{
-  name:"operation3",data: 0
+  name:"operation3",data: 10
 }]);
 @Component({
   selector: 'app-dashboard',
@@ -125,6 +125,17 @@ return this.colors[c1]
       data.push(k["data"]);
       labels.push(k["name"]);
     }
+    for (let k of this.patientDatas1) {
+      data.push(k["data"]);
+      labels.push(k["name"]);
+    }
+    for (let k of this.patientDatas1) {
+      data.push(k["data"]);
+      labels.push(k["name"]);
+    }
+    const maxDataValue = Math.max(...data)
+    const yAxisMax = Math.ceil(maxDataValue / 10) * 10 ; // Round up to the nearest 10
+  
     const chart = new Chart(this.chartRef2.nativeElement, {
       type: 'bar',
       data: {
@@ -133,9 +144,10 @@ return this.colors[c1]
           label: 'patients data',
           data: data,
           backgroundColor:
-            '#C5D0E6',
-          hoverBackgroundColor: "#56CCF2",
-          borderWidth: 0
+            '#DFE8F6',
+          hoverBackgroundColor: "#AAC4F9",
+          borderWidth: 0,
+          
   
         }]
       },
@@ -151,22 +163,36 @@ return this.colors[c1]
           y: {
             grid: {
               drawBorder: false,
-              borderDash: [7, 5],
+              borderDash: [10, 10],
               borderDashOffset: 2,
               tickBorderDash: [2, 2, 2, 2, 2, 2],
+              
             
             },
             ticks: {
-              backdropColor: "red",
-            }
-          }
-  
+              callback: function(value) {
+                // Return the calculated tick values
+                if (value === yAxisMax) {
+                  return ''; // Hide the last tick label
+                } else {
+                  return value;
+                }
+              },
+              
+            
+            }, max:yAxisMax
+          },
+         
         },
         plugins: {
   
           legend: {
             display: false,
   
+          }
+        } ,elements: {
+          bar: {
+            borderRadius: 20 // Set the border radius for the data points
           }
         }
       }
