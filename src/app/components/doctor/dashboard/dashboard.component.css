@@ -1,18 +1,77 @@
-h1{
+h3{
     padding-top: 20px;
     padding-left: 20px;
     color: #192252;
 }
 .body{
-    margin: 20px;
-    width: 100% !important ;
+    margin: 0 20px;
+    width: fill-available !important ;
 }
 .row{
     width: 100% !important ;
+    margin-top: 40px;
+    margin-left: 20px;
 }
 .data{
-    border-width: 1;
+   
+    border-width: 1px;
     border-color: #A9B4CD;
-    border-style:solid ;
+    border-style: solid;
     border-radius: 10px;
+    padding: 15px;
+    min-width: 500px !important;
+
+}
+.chartLegend{
+    display: flex;
+ 
+    justify-content: space-evenly;
+
+}
+.legendCircle{
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+}
+.chartLegend-element{
+    padding : 10px 20px 0 10px;
+    min-width: 100px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.legendtext{
+font-size: 15px;
+color: #acb2c2;
+padding-top: 10px;
+padding-bottom: 5px;
+}
+.legendpercent{
+    font-size: 18px;
+    color: #192252;
+}
+#chart{
+max-width: 200px;
+max-height: 200px;
+}
+.chart-container{
+    padding:   10px 0;
+    display: flex;
+    justify-content: center;
+}
+.rowa{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 20px;
+    margin-top: 30px;
+}
+.data2{
+       
+    border-width: 1px;
+    border-color: #A9B4CD;
+    border-style: solid;
+    border-radius: 10px;
+    padding: 15px;
+    min-width: calc(100% - 510px) !important;
+    margin-left: 10px;
 }

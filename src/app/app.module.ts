@@ -30,6 +30,7 @@ import { DoctorComponent } from './components/doctor/doctor.component';
 import { TransactionComponent } from './components/doctors/transaction/transaction.component';
 import { AppoitmentComponent } from './components/doctors/appoitment/appoitment.component';
 import { PatientlistComponent } from './components/doctors/patientlist/patientlist.component';
+import { NgChartsModule } from 'ng2-charts';
 export function playerFactory() {
   return import('lottie-web');
 }
@@ -60,7 +61,7 @@ export function playerFactory() {
     PatientlistComponent,
    
   ],
-  imports: [HttpClientModule,BrowserModule, FormsModule,AppRoutingModule, FontAwesomeModule,  FontAwesomeModule,BrowserAnimationsModule,LottieModule.forRoot({ player: playerFactory })],
+  imports: [HttpClientModule,BrowserModule, FormsModule,AppRoutingModule, FontAwesomeModule,  FontAwesomeModule,BrowserAnimationsModule,LottieModule.forRoot({ player: playerFactory }), NgChartsModule],
   providers: [FaIconLibrary],
   bootstrap: [AppComponent]
 })

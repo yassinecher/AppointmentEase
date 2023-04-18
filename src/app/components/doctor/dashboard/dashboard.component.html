@@ -1,11 +1,30 @@
 <div class="body">
     <div>
-        <h1>Welcome back, dr. {{username}}</h1>
+        <h3>Welcome back, dr. {{username}}</h3>
     </div>
 
-    <div class="row">
-    <div class="col-4 data"></div>
-    <div class="col-8 "></div>
+    <div class="rowa">
+    <div class=" data">
+      <h5>Patient statistic</h5>
+      <div class="chart-container">
+      <canvas id="chart" #chart></canvas></div>
+      <div class="chartLegend">
+        <div class="chartLegend-element" *ngFor="let det of patientDatas1">
+         <div class="legendCircle"[style.backgroundColor]="color(det)"> </div>
+          <div class="legendtext">{{det["name"]}}</div>
+          <div class="legendpercent">{{this.calcpercentage(det["data"])}} %</div>
+         
+        </div>
+      </div>
+
+    </div>
+    <div class=" data2">
+      <h5>Patient statistic</h5>
+      <div class="chart-container">
+      <canvas id="chart2" #chart2></canvas></div>
+     
+      </div>
+
     </div>
 
 
