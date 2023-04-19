@@ -187,3 +187,25 @@ thead th:first-child {
 .action-column{
 
 }
+.action-icons {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 22px;
+  }
+  
+  .action-icons i {
+    cursor: pointer;
+    color: #848FAC;;
+    margin-right: 5px;
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 50%;
+  }
+  
+  .action-icons i:hover {
+    background-color: #EFF3FA;
+    color: #192252; /* Change the color on hover to blue, you can use any desired color */
+  }
+  .custom-action-column {
+    width: 60px; /* Adjust the width to make the action column smaller or larger */
+  }
