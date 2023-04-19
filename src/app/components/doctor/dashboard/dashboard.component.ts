@@ -2,10 +2,14 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart, registerables,ChartConfiguration } from 'node_modules/chart.js';
 import { Observable, of } from 'rxjs';
 Chart.register(...registerables)
+
+// Interface for patient data
 interface patientData{
   name:String,
   data: number
 }
+
+// Interface for patient details
 interface Patient{
   id:String,
   name:String,
@@ -13,8 +17,9 @@ interface Patient{
   lastname:String,
   gender:String,
   profilePicture:String
-
 }
+
+// Interface for payment data
 interface paymentData{
   patient:Patient,
   appoitment: String,
@@ -24,10 +29,12 @@ interface paymentData{
     methode:String
   },
   Statu:String
-
 }
+
+// Observable for last 3 payments data
 const last3Payments: Observable<paymentData[]>=of([
   {
+    // Payment data for first patient
     patient:{id:"#DC216",
              name:"Scott",
              title: "Mr.",
@@ -43,6 +50,7 @@ const last3Payments: Observable<paymentData[]>=of([
             Statu:"Success"
   },
   {
+    // Payment data for second patient
     patient:{id:"#DC218",
              name:"Alicia",
              lastname:"Brook",
@@ -58,6 +66,7 @@ const last3Payments: Observable<paymentData[]>=of([
             Statu:"Pending"
   },
   {
+    // Payment data for third patient
     patient:{id:"#DC220",
              name:"Robert",
              lastname:"White",
@@ -73,6 +82,8 @@ const last3Payments: Observable<paymentData[]>=of([
             Statu:"Failed"
   }
 ])
+
+// Observable for patient data
 const getpatientdata: Observable<patientData[]> = of([{
   name:"Treatment",data:56},{
   name:"Check-up",data: 21},{
@@ -82,6 +93,7 @@ const getpatientdata: Observable<patientData[]> = of([{
 },{
   name:"operation3",data: 10
 }]);
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -98,16 +110,20 @@ export class DashboardComponent implements OnInit {
     '#FF4C5E',
     '#848FAC'
   ]
+
   constructor(){
   }
-  calcpercentage(number:number){
 
+  // Function to calculate percentage based on patient data
+  calcpercentage(number:number){
     var s = 0
     for( let k of this.patientDatas1){
       s+=k["data"]
     }
    return Math.round((number*100/s + Number.EPSILON) * 100) / 100
   }
+
+  // Function to set color based on patient data
   color(d:patientData){
     let c=0
     let c1=0
@@ -121,16 +137,19 @@ for(let k of this.patientDatas1){
 return this.colors[c1]
   }
   ngOnInit(): void {
+    // Subscribe to getpatientdata Observable
     getpatientdata.subscribe(key => {
       for( const k of key ){
         this.patientDatas1.push(
           {
             name:k["name"],
             data:k["data"]
-           }
-         )
+          }
+        )
       }
     });
+  
+    // Subscribe to last3Payments Observable
     last3Payments.subscribe(key => {
       for( const k of key ){
         this.lastPayments.push(
@@ -140,14 +159,21 @@ return this.colors[c1]
             Date:k["Date"],
             payment:k["payment"],
             Statu:k["Statu"]
-           }
-         )
+          }
+        )
       }
     });
-    this.sortdetails()
-    this.RenderOChart()
-    this.RenderOChart2()
+    // Call sortdetails() function
+    this.sortdetails();
+
+    // Call RenderOChart() function
+    this.RenderOChart();
+  
+    // Call RenderOChart2() function
+    this.RenderOChart2();
   }
+  
+  // Function to sort patientDatas1 array
   sortdetails(){
     this.patientDatas1.sort((a,b)=>(a.data<b.data)?1:-1)
   
@@ -161,6 +187,7 @@ return this.colors[c1]
     }
 
   }
+  // Function to render doughnut chart
   RenderOChart() {
     var data =[]
     var labels=[]
@@ -198,6 +225,7 @@ return this.colors[c1]
       }
     } );
   }
+  // Function to render bar chart
   RenderOChart2() {
     var data = [];
     var labels = [];
