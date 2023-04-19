@@ -6,6 +6,73 @@ interface patientData{
   name:String,
   data: number
 }
+interface Patient{
+  id:String,
+  name:String,
+  title:String,
+  lastname:String,
+  gender:String,
+  profilePicture:String
+
+}
+interface paymentData{
+  patient:Patient,
+  appoitment: String,
+  Date:String,
+  payment:{
+    amount:number,
+    methode:String
+  },
+  Statu:String
+
+}
+const last3Payments: Observable<paymentData[]>=of([
+  {
+    patient:{id:"#DC216",
+             name:"Scott",
+             title: "Mr.",
+             lastname:"mctominay",
+             gender:"male",
+            profilePicture:"male.jpg"},
+            appoitment: "Diabetes Control",
+            Date:"Dec 15 2023",
+            payment:{
+              amount:200,
+              methode:"Credit Card"
+            },
+            Statu:"Success"
+  },
+  {
+    patient:{id:"#DC218",
+             name:"Alicia",
+             lastname:"Brook",
+             gender:"female",
+             title: "Mrs.",
+            profilePicture:"female.jpg"},
+            appoitment: "Monthly Medical Check-up",
+            Date:"Dec 16 2023",
+            payment:{
+              amount:200,
+              methode:"Credit Card"
+            },
+            Statu:"Pending"
+  },
+  {
+    patient:{id:"#DC220",
+             name:"Robert",
+             lastname:"White",
+             title: "Mr.",
+             gender:"male",
+            profilePicture:"male.jpg"},
+            appoitment: "Root Canal",
+            Date:"Dec 17 2023",
+            payment:{
+              amount:200,
+              methode:"Google"
+            },
+            Statu:"Failed"
+  }
+])
 const getpatientdata: Observable<patientData[]> = of([{
   name:"Treatment",data:56},{
   name:"Check-up",data: 21},{
@@ -24,7 +91,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('chart', { static: true }) chartRef!: ElementRef;
   @ViewChild('chart2', { static: true }) chartRef2!: ElementRef;
   username = "Yassine Cherni";
-  patientDatas!: Observable<patientData[]>;
+  lastPayments:paymentData[]=[]
   patientDatas1:patientData[] = []; 
   colors=[
     '#1D3EAF',
@@ -54,8 +121,7 @@ for(let k of this.patientDatas1){
 return this.colors[c1]
   }
   ngOnInit(): void {
-    this.patientDatas=getpatientdata
-    this.patientDatas.subscribe(key => {
+    getpatientdata.subscribe(key => {
       for( const k of key ){
         this.patientDatas1.push(
           {
@@ -64,7 +130,19 @@ return this.colors[c1]
            }
          )
       }
-   console.log(   this.patientDatas1)
+    });
+    last3Payments.subscribe(key => {
+      for( const k of key ){
+        this.lastPayments.push(
+          {
+            patient:k["patient"],
+            appoitment:k["appoitment"],
+            Date:k["Date"],
+            payment:k["payment"],
+            Statu:k["Statu"]
+           }
+         )
+      }
     });
     this.sortdetails()
     this.RenderOChart()
@@ -107,6 +185,8 @@ return this.colors[c1]
         }]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         cutout:70,
         plugins: {
           
@@ -144,7 +224,7 @@ return this.colors[c1]
           label: 'patients data',
           data: data,
           backgroundColor:
-            '#DFE8F6',
+            '#afcdfddb',
           hoverBackgroundColor: "#AAC4F9",
           borderWidth: 0,
           
@@ -152,7 +232,10 @@ return this.colors[c1]
         }]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
+          
           x: {
             grid: {
               display: false,

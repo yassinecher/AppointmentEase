@@ -1,31 +1,80 @@
 <div class="body">
-    <div>
-        <h3>Welcome back, dr. {{username}}</h3>
-    </div>
+  <div>
+    <h3>Welcome back, dr. {{username}}</h3>
+  </div>
 
-    <div class="rowa">
+  <div class="rowa">
     <div class=" data">
       <h5>Patient statistic</h5>
       <div class="chart-container">
-      <canvas id="chart" #chart></canvas></div>
+        <canvas id="chart" #chart></canvas>
+      </div>
       <div class="chartLegend">
         <div class="chartLegend-element" *ngFor="let det of patientDatas1">
-         <div class="legendCircle"[style.backgroundColor]="color(det)"> </div>
+          <div class="legendCircle" [style.backgroundColor]="color(det)"> </div>
           <div class="legendtext">{{det["name"]}}</div>
           <div class="legendpercent">{{this.calcpercentage(det["data"])}} %</div>
-         
+
         </div>
       </div>
 
     </div>
     <div class=" data2">
-      <h5>Patient statistic</h5>
-      <div class="chart-container">
-      <canvas id="chart2" #chart2></canvas></div>
-     
+      <h5>Money Earned</h5>
+      <div class="chart-container" style="height: 300px;">
+        <canvas id="chart2" #chart2></canvas>
       </div>
 
     </div>
+
+  </div>
+  <div class="payments">
+    <h5>Recent Payment</h5>
+    <div class="table-container">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Appoitment</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Statu</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let P of lastPayments">
+          <tr>
+            <td class="patient-column"><img src='assets/{{P["patient"]["profilePicture"]}}' class="Patient-profile">
+              <div style="padding-left: 15px;">
+                <div class="patient-column-name">{{P["patient"]["title"]}} {{P["patient"]["name"]}} {{P["patient"]["lastname"]}}</div>
+                <div class="patient-column-id">{{P["patient"]["id"]}}</div>
+              </div>
+            </td>
+            <td class="appointment-column">
+              {{P["appoitment"]}}
+            </td>
+            <td class="date-column">
+              {{P["Date"]}}
+            </td>
+            <td class="total-column">
+              <div class="total-column-amount">{{P["payment"]["amount"]}} $</div>
+              <div class="total-column-method">{{P["payment"]["methode"]}}</div>
+              
+            </td>
+            <td class="statu-column {{P['Statu']}}">
+              <div class="statu-column {{P['Statu']}}">
+                  {{P["Statu"]}}
+              </div>
+            
+            </td>
+            <td class="action-column">
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 
 </div>
