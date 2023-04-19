@@ -3,17 +3,11 @@
     background-color: #ffffffb5;
     
     border-width: 0 0 2px 0;
-
+   
     z-index: 0;
     ">
-        <div class="navbar-container">
-          <div class="navbar-container-part1">
-            <div class=" navbar-logo-container py-3 px-5">
-              <img src="../../assets/logo.png" class="navbar-logo-img">
-              <div class="navbar-logo-title">Appointmentease</div>
-            </div>
-           
-          </div>
+        <div class="navbar-container" style="">
+         
           <div class="nav-bar-elements">
             <button class="setting" style="z-index: 3;position: relative;" [class.active]="isActive1" (click)="toggleActive1()">
                 <svg width="30" style="z-index: -3;position: relative;" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,8 +46,16 @@
         </div>
         </div>
       </header></div>
-<div class="body">
-    <div class="sidebar">
+<div class="body"><div style="position: fixed; height: 120%;"> 
+    <div class="navbar-container-part1" >
+            <div class=" navbar-logo-container py-3 px-5" >
+              <img src="../../assets/logo.png" class="navbar-logo-img">
+              <div class="navbar-logo-title">Appointmentease</div>
+            </div>
+           
+          </div>
+    <div class="sidebar" style="position: sticky; top: 86.094px;">
+       
     <button class="sidebar-button" style="border-width:  1px 0;" routerLink="./" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path  d="M7.12109 17.5625C6.70709 17.5625 6.37109 17.2265 6.37109 16.8125V9.9525C6.37109 9.5385 6.70709 9.2025 7.12109 9.2025C7.53509 9.2025 7.87109 9.5385 7.87109 9.9525V16.8125C7.87109 17.2265 7.53509 17.5625 7.12109 17.5625" />
@@ -163,8 +165,8 @@
                 </g>
                 </svg>
                   Transaction</button>
-</div> 
-<div style="width: calc(100% -  351.23px);">
+</div> </div>
+<div style="width: calc(100% -  351.23px);margin-left:  351.23px !important; margin-top: 86px!important;">
 <router-outlet></router-outlet>
 </div>
 </div>
