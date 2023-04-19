@@ -17,9 +17,9 @@ import { InboxComponent } from './components/doctor/inbox/inbox.component';
 import { OpenaiComponent } from './components/doctor/openai/openai.component';
 import { MainComponent } from './components/main/main.component';
 import { DoctorComponent } from './components/doctor/doctor.component';
-import { TransactionComponent } from './components/doctors/transaction/transaction.component';
-import { AppoitmentComponent } from './components/doctors/appoitment/appoitment.component';
-import { PatientlistComponent } from './components/doctors/patientlist/patientlist.component';
+import { TransactionComponent } from './components/doctor/transaction/transaction.component';
+import { AppoitmentComponent } from './components/doctor/appoitment/appoitment.component';
+import { PatientlistComponent } from './components/doctor/patientlist/patientlist.component';
 
 const routes: Routes = [
   {path:"",component:MainComponent ,children:[

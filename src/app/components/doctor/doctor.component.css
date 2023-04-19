@@ -1,8 +1,9 @@
 .body
 {
     display: flex;
-    height: calc(130vh );
+    height: calc(100vh );
     width: 100%;
+    margin-bottom: 10px !important;
 
 }
 .navbar-container{
@@ -12,7 +13,7 @@
     padding: 20px;
     align-items: center;
     width: 100%;
-    position: fixed;
+
 }
 .sidebar{
 

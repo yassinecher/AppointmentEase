@@ -1,0 +1,44 @@
+h3{
+    padding-top: 20px;
+    padding-left: 20px;
+    color: #192252;
+}
+h5{
+    padding: 0px 0 3px 0;
+    color: #192252;
+    font-weight: 500;
+    font-size: 23px;
+}
+.body{
+    margin: 0px 20px;
+    width: -webkit-fill-available !important;
+    width: fill-available !important;
+    padding-bottom: 20px;
+}
+.search-Bar{
+    width: 100%;
+    padding: 10px 10px 10px 50px;
+    border-color:#EFF3FA;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+}
+.search-svg path{
+fill: #A9B4CD;
+}
+.download-filter-container{
+    display: flex;
+    justify-content:space-around;
+}
+.download-filter-container button{
+    background: white;
+    color: #192252;
+    border: 0;
+    padding: 13px 15px;
+    border-radius: 10px;
+}
+.download-filter-container button:hover{
+   
+    background-color: #EFF3FA;
+   
+}
