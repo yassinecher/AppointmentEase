@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "appointmentease1"
+  },
+  "targets": {
+    "app-pfe-3237e": {
+      "hosting": {
+        "app-PFE": [
+          "app-pfe-3237e"
+        ]
+      }
+    }
   }
 }

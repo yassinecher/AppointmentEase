@@ -1,0 +1,112 @@
+h3{
+    padding-top: 20px;
+    padding-left: 20px;
+    color: #192252;
+}
+h6{
+    padding: 15px 0 3px 0;
+    color: #192252;
+    font-size:  large;
+   
+}
+.body{
+    margin: 0px 20px;
+    width: -webkit-fill-available !important;
+    width: fill-available !important;
+    padding-bottom: 20px;
+    height: calc(100vh - 110px);
+}
+.search-Bar{
+    width: 100%;
+    padding: 10px 10px 10px 50px;
+    border-color:#EFF3FA;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+}
+.search-svg path{
+fill: #A9B4CD;
+}
+.conversations{
+    border:1px #A9B4CD solid ;
+    border-radius: 10px;
+    padding: 20px;
+    display: none
+}
+.icon-send{
+    border-radius: 50%;
+    border:3px #192252 solid ;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-send path{
+    fill: #192252;
+}
+.start-btn{
+    margin: 15px 0 3px 0;
+    color: #192252;
+    font-size:  large;
+    background-color: transparent;
+    border: 0px;
+    border-radius: 10px;
+    padding: 10px;
+}
+.start-btn:hover{
+    background-color: #EFF3FA;
+}
+.profile-img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.input-background{
+    background: #eff3fa;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.user-sugg{
+    margin: 5px;
+    padding: 5px;
+    background-color: white;
+    border-radius: 10px;
+}
+.user-sugg.last-style{
+    
+    margin: 5px 5px 10px 5px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.user-sugg.first-style{
+    
+    margin: 10px 5px 5px 5px;
+    background-color: white;
+    border-radius: 10px;
+}
+.sugg-container{
+    display: none;
+}
+.sugg-container.active{
+    display: flex;
+    flex-direction: column;
+}
+.conversations.active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.conversationsOn{
+    border:1px #A9B4CD solid ;
+    border-radius: 10px;
+    padding: 20px;
+    display: none
+}
+.conversationsOn.active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

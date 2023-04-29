@@ -42,3 +42,69 @@ fill: #A9B4CD;
     background-color: #EFF3FA;
    
 }
+.patient-profile-img{
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+.patient-container{
+    border: 1px  solid #A9B4CD;
+    border-radius: 10px;
+    margin: 10px 0px;
+    padding: 30px ;
+}
+.patient-info{
+    display: flex;
+    justify-content: space-between;
+}
+.patient-container button{
+    background-color: #192252;
+    color: white;
+    border: 0;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.paginat{
+    display: flex;
+    justify-content: end;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+.arrow-btn{
+    background-color: transparent;
+    border: transparent;
+    padding: 5px 15px;
+    border-radius: 3px;
+}
+.arrow-btn:hover{
+    background-color: #EFF3FA;
+    border: transparent;
+}
+.arrow-btn:disabled:hover{
+    background-color: transparent;
+    border: transparent;
+} 
+.arrow-btn:disabled path{
+ fill: #A9B4CD;
+
+}
+.threep{
+  padding: 1px 20px;
+}
+.nbtn{
+    background-color: transparent;
+    border: transparent;
+    color: #A9B4CD;
+    padding: 5px 15px;
+    border-radius: 3px;
+}
+.nbtn.active{
+    color: #192252; 
+    background-color: #EFF3FA;
+}
+.nbtn:hover{
+color: #192252;
+}

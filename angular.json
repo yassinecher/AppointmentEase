@@ -28,7 +28,6 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
-              
             ],
             "scripts": []
           },
@@ -38,7 +37,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -93,6 +92,16 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "app-PFE:build:production",
+            "firebaseProject": "app-pfe-3237e",
+            "firebaseHostingSite": "app-pfe-3237e"
           }
         }
       }
