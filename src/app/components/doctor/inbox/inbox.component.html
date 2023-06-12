@@ -1,77 +1,72 @@
-<div class="body row">
-    <div class=" col-5">
-    <div> <h3>Message</h3>
-        <div class="input-sugg    input-background">  <div class="input-sugg ">
-        <svg width="24" class="search-svg input-sugg "
-            style="position: absolute;font-size: 20px;margin: 10px 10px;color: #EFF3FA ;" height="24"
-            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="Iconly/Light-Outline/Search">
-                <g id="Search">
-                    <g id="Group 3">
-                        <mask id="mask0_2_5793" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="2" y="2"
-                            width="20" height="20">
-                            <path id="Clip 2" fill-rule="evenodd" clip-rule="evenodd" d="M2 2H21.4768V21.477H2V2Z"
-                                fill="white" />
-                        </mask>
-                        <g mask="url(#mask0_2_5793)">
-                            <path id="Fill 1" fill-rule="evenodd" clip-rule="evenodd"
-                                d="M11.7388 3.5C7.19576 3.5 3.49976 7.195 3.49976 11.738C3.49976 16.281 7.19576 19.977 11.7388 19.977C16.2808 19.977 19.9768 16.281 19.9768 11.738C19.9768 7.195 16.2808 3.5 11.7388 3.5ZM11.7388 21.477C6.36876 21.477 1.99976 17.108 1.99976 11.738C1.99976 6.368 6.36876 2 11.7388 2C17.1088 2 21.4768 6.368 21.4768 11.738C21.4768 17.108 17.1088 21.477 11.7388 21.477Z"
-                                fill="black" />
-                        </g>
-                    </g>
-                    <g id="Group 6">
-                        <mask id="mask1_2_5793" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="17" y="17"
-                            width="6" height="6">
-                            <path id="Clip 5" fill-rule="evenodd" clip-rule="evenodd"
-                                d="M17.24 17.7069H22.264V22.7217H17.24V17.7069Z" fill="white" />
-                        </mask>
-                        <g mask="url(#mask1_2_5793)">
-                            <path id="Fill 4" fill-rule="evenodd" clip-rule="evenodd"
-                                d="M21.5142 22.7217C21.3232 22.7217 21.1312 22.6487 20.9842 22.5027L17.4602 18.9887C17.1672 18.6957 17.1662 18.2207 17.4592 17.9277C17.7512 17.6327 18.2262 17.6347 18.5202 17.9257L22.0442 21.4407C22.3372 21.7337 22.3382 22.2077 22.0452 22.5007C21.8992 22.6487 21.7062 22.7217 21.5142 22.7217Z"
-                                fill="black" />
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </svg>
+<div class="inbox-container body row">
+  <div class="sidebar col-5">
+    <div class="search-bar">
+      <input id="search" [(ngModel)]="searchValue" type="text" placeholder="Search" (keyup)="searchUser(searchValue)" />
 
-
-
-        <input  type="text" id="search" class="search-Bar input-sugg " placeholder="Search for patient here" (focus)="suggestconversation()" autocomplete="off">
-    </div>
-    <div class="input-background sugg-container input-sugg "  [class.active]="isActive">
-    <div class="user-sugg input-sugg " *ngFor="let p of this.suggestedPatient ;  let last = last; let first=first"  [ngClass]="{'last-style': last, 'first-style':first}" (click)="openconversation(p['id'])">
-        <img class="profile-img input-sugg " src="assets/{{p['profilePhoto']}}" alt="">
-        {{p['name']}}  {{p['lastname']}}
-    </div>
-</div>
-</div>
+      <div *ngFor="let user of suggestedUsers">
+        <div class="user-info" (click)="createChat(user);suggestedUsers=[]">
+          <img src="{{user.profilePic}}" class="profile-img" alt="User Profile" />
+          <div class="details">
+            <span class="name">{{ user.name }}</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    </div>
-    <div class="col-7 conversations" [class.active]="!isConversation">
-        <div style="display: flex;flex-direction: column;
-        align-content: center;
-        align-items: center;">
-        <div class="icon-send"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="Iconly/Light-Outline/Send">
-            <g id="Send">
-            <mask  maskUnits="userSpaceOnUse" x="2" y="3" width="20" height="20">
-            <path id="Clip 2" fill-rule="evenodd" clip-rule="evenodd" d="M2 3.0004H21.499V22.4994H2V3.0004Z" fill="white"/>
-            </mask>
-            <g mask="url(#mask0_2_5833)">
-            <path id="Fill 1" fill-rule="evenodd" clip-rule="evenodd" d="M10.8049 14.8178L14.4619 20.7508C14.6219 21.0108 14.8719 21.0078 14.9729 20.9938C15.0739 20.9798 15.3169 20.9178 15.4049 20.6228L19.9779 5.1778C20.0579 4.9048 19.9109 4.7188 19.8449 4.6528C19.7809 4.5868 19.5979 4.4458 19.3329 4.5208L3.87695 9.0468C3.58394 9.1328 3.51994 9.3788 3.50594 9.4798C3.49194 9.5828 3.48794 9.8378 3.74695 10.0008L9.74794 13.7538L15.0499 8.3958C15.3409 8.1018 15.8159 8.0988 16.1109 8.3898C16.4059 8.6808 16.4079 9.1568 16.1169 9.4508L10.8049 14.8178ZM14.8949 22.4998C14.1989 22.4998 13.5609 22.1458 13.1849 21.5378L9.30794 15.2468L2.95194 11.2718C2.26694 10.8428 1.90894 10.0788 2.01994 9.2758C2.12994 8.4728 2.68094 7.8348 3.45494 7.6078L18.9109 3.0818C19.6219 2.8738 20.3839 3.0708 20.9079 3.5928C21.4319 4.1198 21.6269 4.8898 21.4149 5.6038L16.8419 21.0478C16.6129 21.8248 15.9729 22.3738 15.1719 22.4808C15.0779 22.4928 14.9869 22.4998 14.8949 22.4998Z" fill="black"/>
-            </g>
-            </g>
-            </g>
-            </svg>
-            </div>
-            <button class="start-btn" (click)="focusSearch()">Start new Conversation</button>
+  
+    <div class="chat-list">
+      <div *ngFor="let chat of chatlist " class="chat-item">
+        <div class="user-info" (click)="openChat(chat.patientid)">
+          <img src="{{getchatimg(chat)}}" class="profile-img" alt="User Profile" />
+          <div class="details">
+            <span class="name">{{ getchatname(chat) }}</span>
+          
+          </div>
+        </div>
+      </div>
     </div>
 
+  </div>
 
-</div>    <div [class.active]="isConversation" class="col-7 conversationsOn">
+<div class="chat-window col-7">
+  <div class="messages" *ngIf="currentchat ;else nochat">
+    <div class="messages-header">
+      <img src="{{getchatimg(currentchat)}}" class="profile-img" alt="User Profile" />
+      <div>{{getchatname(currentchat)}}</div>
+   
+      <div class="call-btn" *ngIf="userHaveCallID.length == 0 ;else incalll" [ngClass]="{'offline': status$ === 'offline'}">
+     
+     
 
+        <button  (click)="startcall()">Call</button> 
+       
     </div>
+      <ng-template #incalll>
+    you are in a call
+  </ng-template>
+    
+    </div>
+
+    <div class="chat-area" *ngIf=" currentchat.messages" #endOfChat  #chatArea  [scrollTop]="scrollPos" id="XX"  >
+
+      <div class="chat-bubble-container"  *ngFor="let msg of currentchat.messages" [ngClass]="{'sender': msg.senderId === cuuser.id}">
+        <div class="chat-bubble">
+          {{ msg.text }}
+        </div>
+  
+    </div>
+    </div>
+    <div>
+      <form (ngSubmit)="sendMessage()">
+        <input type="text" [(ngModel)]="newMessage" name="messageControl">
+
+        <button type="submit">send</button>
+      </form>
+    </div>
+  </div>
+
+  <ng-template #nochat>
+    XXXXXXXXXXX
+  </ng-template>
 
 </div>

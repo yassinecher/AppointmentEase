@@ -1,6 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { doc } from 'firebase/firestore';
 import { Chart, registerables, ChartConfiguration } from 'node_modules/chart.js';
 import { Observable, of } from 'rxjs';
+import { Appoitment } from 'src/app/models/user.model';
+import { DoctorServicesService } from 'src/app/services/doctor-services.service';
 Chart.register(...registerables)
 
 // Interface for patient data
@@ -8,6 +12,7 @@ interface patientData {
   name: String,
   data: number
 }
+
 
 // Interface for patient details
 interface Patient {
@@ -118,18 +123,89 @@ export class DashboardComponent implements OnInit {
     '#FF4C5E',
     '#848FAC'
   ]
-
-  constructor() {
+  selectedDate!:Date
+appoitmentList:Appoitment[]=[]
+  constructor(private docService:DoctorServicesService,private datePipe:DatePipe) {
+    const currentDate = new Date();
+    this.selectedDate=currentDate
+    const firstDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0);
+    const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0, 23, 59, 59);
+ 
+    docService.getAppointmentsByDates(firstDate,lastDate).subscribe((k)=>{
+      this.appoitmentList =k as unknown as Appoitment[]
+      console.log(this.extractStatusAPT(this.appoitmentList))
+      this.RenderOChart2();
+      this.RenderOChart()
+    })
   }
-
-  // Function to calculate percentage based on patient data
-  calcpercentage(number: number) {
-    var s = 0
-    for (let k of this.patientDatas1) {
-      s += k["data"]
+  thisdayhaveApps(){
+    let res = false
+    for (let a of this.appoitmentList){
+      if(this.isSameDay(a.date.toString())){
+        res=true
+      }
     }
-    return Math.round((number * 100 / s + Number.EPSILON) * 100) / 100
+    return res
   }
+  isSameDay(d: string) {
+    const targetDate = new Date(d);
+    const currentDate = new Date();
+  
+    return this.isSDay(targetDate, currentDate);
+  }
+  
+  isSDay(date1: Date, date2: Date) {
+    // Extract year, month, and day components from the dates
+    const year1 = date1.getFullYear();
+    const month1 = date1.getMonth();
+    const day1 = date1.getDate();
+  
+    const year2 = date2.getFullYear();
+    const month2 = date2.getMonth();
+    const day2 = date2.getDate();
+  
+    // Compare year, month, and day components
+    return year1 === year2 && month1 === month2 && day1 === day2;
+  }
+  
+  
+  Dtosting(d:string){
+    console.log(d)
+    const date = new Date(d);
+    const formattedDate = this.datePipe.transform(date, 'd MMM yyyy HH:mm');
+    return formattedDate
+  
+  }
+  extractStatusAPT(data: any[]): string[] {
+    const statusAPTArray: string[] = [];
+
+    data.forEach((item) => {
+      statusAPTArray.push(item.statusAPT);
+    });
+
+    return statusAPTArray;
+  }
+  // Function to calculate percentage based on patient data
+  calcpercentage(status: string) {
+    let totalCount = 0;
+    let statusCount = 0;
+  
+    for (const appointment of this.appoitmentList) {
+      if (appointment.statusAPT !== 'CANCELED') {
+        totalCount++;
+        if (appointment.statusAPT === status) {
+          statusCount++;
+        }
+      }
+    }
+  
+    if (totalCount === 0) {
+      return 0;
+    }
+  
+    return Math.round((statusCount / totalCount) * 100);
+  }
+  
 
   // Function to set color based on patient data
   color(d: patientData) {
@@ -175,10 +251,10 @@ export class DashboardComponent implements OnInit {
     this.sortdetails();
 
     // Call RenderOChart() function
-    this.RenderOChart();
+  
 
     // Call RenderOChart2() function
-    this.RenderOChart2();
+
   }
 
   // Function to sort patientDatas1 array
@@ -195,89 +271,117 @@ export class DashboardComponent implements OnInit {
     }
 
   }
-  // Function to render doughnut chart
   RenderOChart() {
-    var data = []
-    var labels = []
-    for (let k of this.patientDatas1) {
-      data.push(k["data"])
-      labels.push(k["name"])
+    let pendingCount = 0;
+    let approvedCount = 0;
+    let doneCount = 0;
+  
+    for (const appointment of this.appoitmentList) {
+      const status = appointment.statusAPT;
+      if (status === 'PENDING') {
+        pendingCount++;
+      } else if (status === 'APPROVED') {
+        approvedCount++;
+      } else if (status === 'DONE') {
+        doneCount++;
+      }
     }
+  
+    const data = [pendingCount, approvedCount, doneCount];
+    const labels = ['PENDING', 'APPROVED', 'DONE'];
+  console.log(data)
     const chart = new Chart(this.chartRef.nativeElement, {
       type: 'doughnut',
       data: {
         labels: labels,
-        datasets: [{
-          label: 'patients data',
-          data: data,
-          backgroundColor: [
-            '#1D3EAF',
-            '#FF4C5E',
-            '#848FAC'
-          ],
-          hoverOffset: 4
-
-        }]
+        datasets: [
+          {
+            label: 'Appointment Status',
+            data: data,
+            backgroundColor: [
+              '#1D3EAF',
+              '#FF4C5E',
+              '#848FAC',
+            ],
+            hoverOffset: 4,
+          },
+        ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         cutout: 70,
         plugins: {
-
           legend: {
             display: false,
-
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
-  // Function to render bar chart
-  RenderOChart2() {
-    var data = [];
-    var labels = [];
-    for (let k of this.patientDatas1) {
-      data.push(k["data"]);
-      labels.push(k["name"]);
-    }
-    for (let k of this.patientDatas1) {
-      data.push(k["data"]);
-      labels.push(k["name"]);
-    }
-    for (let k of this.patientDatas1) {
-      data.push(k["data"]);
-      labels.push(k["name"]);
-    }
-    const maxDataValue = Math.max(...data)
-    const yAxisMax = Math.ceil(maxDataValue / 10) * 10; // Round up to the nearest 10
+  
+  
+  countComplitedApp(){
 
+  }
+  countPendingApp(){
+    
+  }
+  
+  RenderOChart2() {
+    const dataByDay: { [key: string]: number } = {};
+    const labels: string[] = [];
+    const currentDate = new Date();
+    const firstDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0);
+    const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0, 23, 59, 59);
+    const currentDay = new Date(firstDate);
+  
+    while (currentDay <= lastDate) {
+      const day = currentDay.toLocaleDateString();
+      dataByDay[day] = 0; // Initialize the value as 0
+      labels.push(day); // Add the day as a label
+      currentDay.setDate(currentDay.getDate() + 1); // Move to the next day
+    }
+  
+    for (const appointment of this.appoitmentList) {
+      const day = new Date(appointment.date).toLocaleDateString();
+  
+      if (dataByDay.hasOwnProperty(day)) {
+        dataByDay[day]++; // Increment the value for the appointment day
+      }
+    }
+  
+    const datasets = [
+      {
+        label: 'Appointments',
+        data: labels.map((day) => dataByDay[day]),
+        fill: false,
+        borderColor: '#afcdfddb',
+        backgroundColor: '#afcdfddb',
+        borderWidth: 2,
+        pointRadius: 0, // Set the point radius to 0 to hide the data points
+      },
+    ];
+  
     const chart = new Chart(this.chartRef2.nativeElement, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: labels,
-        datasets: [{
-          label: 'patients data',
-          data: data,
-          backgroundColor:
-            '#afcdfddb',
-          hoverBackgroundColor: "#AAC4F9",
-          borderWidth: 0,
-
-
-        }]
+        datasets: datasets,
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-
           x: {
             grid: {
               display: false,
-              drawBorder: false
-
-            }
+              drawBorder: false,
+            },
+            ticks: {
+              maxRotation: 0, // Set the maximum rotation to 0 degrees
+              minRotation: 0, // Set the minimum rotation to 0 degrees
+            },
           },
           y: {
             grid: {
@@ -285,38 +389,20 @@ export class DashboardComponent implements OnInit {
               borderDash: [10, 10],
               borderDashOffset: 2,
               tickBorderDash: [2, 2, 2, 2, 2, 2],
-
-
             },
             ticks: {
-              callback: function (value) {
-                // Return the calculated tick values
-                if (value === yAxisMax) {
-                  return ''; // Hide the last tick label
-                } else {
-                  return value;
-                }
-              },
-
-
-            }, max: yAxisMax
+              stepSize: 1, // Ensure the y-axis steps by 1
+            },
           },
-
         },
         plugins: {
-
           legend: {
             display: false,
-
-          }
-        }, elements: {
-          bar: {
-            borderRadius: 20 // Set the border radius for the data points
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
-
-
+  
+  
 }

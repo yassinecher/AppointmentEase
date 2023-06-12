@@ -1,5 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
+import { patientProfile } from 'src/app/models/user-profile';
+import { Appoitment, Consultation } from 'src/app/models/user.model';
+import { Doctor, DoctorServicesService } from 'src/app/services/doctor-services.service';
+import { SpringAuthService } from 'src/app/services/spring-auth.service';
 interface appointmentHistory {
   history: AppointmentRecord[]
 }
@@ -30,295 +35,7 @@ interface patient {
   phone: String,
   patientDetails:patientDetails
 }
-const Opatientlist: Observable<patient[]> = of([
-  {
-    id: "1",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-    title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "adress",
-  weight: "weightqasd",
-  gender: "male",
-  heigth: "10",
-  appointmenthistory: {history:[]}}
-  },
-  {
-    id: "2",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-   appointmenthistory: {history:[]}}
-  },
-  {
-    id: "3",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-   appointmenthistory: {history:[]}}
-  },
-  {
-    id: "4",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "5",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  }, {
-    id: "6",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "7",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "8",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "9",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "10",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "10",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  }, {
-    id: "11",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "12",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "13",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "14",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "15",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  },
-  {
-    id: "16",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  }, {
-    id: "17",
-    name: "String",
-    lastname: "String",
-    email: "String",
-    phone: "String",
-    profilePhoto:"male.jpg",
-        title: "Mr.",
-    patientDetails:{
-  patientid: "String",
-  adress: "String",
-  weight: "String",
-  gender: "String",
-  heigth: "String",
-    appointmenthistory: {history:[]}}
-  }
-])
-
-
+const Opatientlist: Observable<patient[]> = of([])
 
 @Component({
   selector: 'app-patientlist',
@@ -326,17 +43,58 @@ const Opatientlist: Observable<patient[]> = of([
   styleUrls: ['./patientlist.component.css']
 })
 export class PatientlistComponent implements OnInit {
-
-  patientList: patient[] = []
-  pages:patient[][] = []
+selectepatient:patientProfile| undefined
+  patientList: patientProfile[] = []
+  pages:patientProfile[][] = []
   Currentpage:number=1
   totalPages:number=0
   profilesDetails:patientDetails[]=[]
+  user!:Doctor
+  consultation!:Consultation
+  constructor(private docservice:DoctorServicesService,private datePipe: DatePipe, private userService:SpringAuthService){
+ 
+this.docservice.doctor$.pipe(take(1)).subscribe((k)=>{
+
+  this.user=k
+  console.log(k)
+  
+})
+this.docservice.getMypatients().pipe(take(1)).subscribe((k)=>{
+  this.patientList=k as unknown as patientProfile[]
+})
+  }
   ngOnInit(): void {
     this.getpatients()
   }
+  setApps(p:patientProfile) {
+    let app: number[] = [];
+    
+    for (let ap of p!?.appointments) {
+      if (ap.statusAPT == "DONE") {
+        this.docservice.getappoitmentsById(ap.id.toString()).pipe(take(1)).subscribe((k) => {
+          let apa = k as Appoitment ;
+          let i = p.appointments.findIndex((az) => az.id == ap.id);
+          console.log(i   )
+          if (i && apa ) { // Check if apa is not undefined
+            p.appointments[i] = apa;
+            console.log(p.appointments[i]   );
+          }
+          this.selectepatient=p;
+          this.selectepatient.appointments[i] = apa;
+          console.log(this.selectepatient);
+        });
+      }
+    }
+ 
+  }
+  Dtosting(d:string){
+console.log(d)
+const date = new Date(d);
+const formattedDate = this.datePipe.transform(date, 'd MMM yyyy HH:mm');
+return formattedDate || '';
+  }
   getpatients() {
-    Opatientlist.subscribe(key => {
+    this.docservice.getMypatients().subscribe(key => {
       for (let k of key) {
         this.patientList.push(
           k
@@ -348,9 +106,9 @@ export class PatientlistComponent implements OnInit {
     console.log(this.pages)
 
   }
-  paginate(items: patient[], pageSize: number): patient[][] {
+  paginate(items: patientProfile[], pageSize: number): patientProfile[][] {
     const pages = [];
-    let currentPage: patient[] = [];
+    let currentPage: patientProfile[] = [];
     let currentIndex = 0;
     this.profilesDetails=[]
     for (const item of items) {
@@ -365,55 +123,12 @@ export class PatientlistComponent implements OnInit {
       }
     }
   
-    if (currentPage.length > 0) {
-      pages.push(currentPage);
-    }
-    for (const item of items) {
-      if (currentIndex < pageSize) {
-        currentPage.push(item);
-        currentIndex++;
-        
-      } else {
-        pages.push(currentPage);
-        currentPage = [item];
-        currentIndex = 1;
-      }
-    }
-  
-    if (currentPage.length > 0) {
-      pages.push(currentPage);
-    }
-    for (const item of items) {
-      if (currentIndex < pageSize) {
-        currentPage.push(item);
-        currentIndex++;
-        
-      } else {
-        pages.push(currentPage);
-        currentPage = [item];
-        currentIndex = 1;
-      }
-    }
-  
-    if (currentPage.length > 0) {
-      pages.push(currentPage);
-    }
-    for (const item of items) {
-      if (currentIndex < pageSize) {
-        currentPage.push(item);
-        currentIndex++;
-        
-      } else {
-        pages.push(currentPage);
-        currentPage = [item];
-        currentIndex = 1;
-      }
-    }
-  
-    if (currentPage.length > 0) {
-      pages.push(currentPage);
-    }
 
+  
+    if (currentPage.length > 0) {
+      pages.push(currentPage);
+    }
+   
 
     this.totalPages=pages.length
     return pages;
@@ -473,5 +188,15 @@ return  this.pages[i]
     }
     return pages;
   }
+  anyconsolt(){
+    let result=false
+   for(let ap of this.selectepatient!.appointments) {
+           if(ap.consultation){
+            result=true
+           }
+   }
+   return result
+  }
+
   
 }  

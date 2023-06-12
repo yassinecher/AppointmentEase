@@ -1,195 +1,173 @@
-import { Component, OnInit } from '@angular/core';
-import {  HostListener, EventEmitter } from '@angular/core';
-import { patientService } from 'src/app/patientService';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/database';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable, of, combineLatest, fromEvent, Subject } from 'rxjs';
+import { switchMap, tap, map, startWith, timeout, delay, take, takeUntil } from 'rxjs/operators';
+
+import { Message, Chat } from 'src/app/models/chat';
+import { ProfileUser, patientProfile } from 'src/app/models/user-profile';
+import { PresenceService } from 'src/app/services/presence.service';
+import { ChatsService } from 'src/app/services/chats.service';
+import { UsersService } from 'src/app/services/users.service';
+import { Doctor, DoctorServicesService } from 'src/app/services/doctor-services.service';
+import { DoctorChatService, chatReq } from 'src/app/services/doctor/doctor-chat.service';
 
 
-// Initialize Firebase app
-const firebaseConfig = {
-  apiKey: "AIzaSyDyBCZAvxVBMk7S0hFSAtq2cHEmpiFbWlo",
-  authDomain: "app-pfe-3237e.firebaseapp.com",
-  databaseURL:"https://app-pfe-3237e-default-rtdb.europe-west1.firebasedatabase.app/"
-};
-firebase.initializeApp(firebaseConfig);
-export interface Con {
-  id?: string | null; // Make id explicitly optional
-  participants: string[];
-  createdAt: Date;
-  messages: Message[];
-}
-export default firebase;
-interface converstaionLab{
-  id:String,
-  user1:String,
-  user2:String,
-  new:number,
-  lastmessage:{
-    userid:String,
-    content:String,
-  }
-}
-interface Message {
 
-  sender: string;
-  content: string;
-  timestamp: Date;
+interface Patient {
+  id: number;
+  name: string;
+  lastname: string;
+  email: string;
+  phoneNumber: string;
+  profilePhoto: string;
+  appointmentHistory: {
+    id: number;
+    date: string;
+    reason: string;
+  }[];
 }
-interface converstaion{
-  id:number;
-  useroneid:number;
-  usertwoid:number;
-  messages:Message[]
-}
-interface patient{
-  id: number,
-  name:String,
-  lastname:String ,
-  email:String,
-  phoneNumber:String ,
-  profilePhoto: String,
-  appointmentHistory: [
-    {
-      id: number,
-      date: String,
-      reason: String
-    }
-  ]
-}
+type Target = Document | HTMLElement;
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
 export class InboxComponent implements OnInit {
-  conversations:converstaionLab[]=[]
-  CurrentConverstation!:converstaion
-  suggestedPatient:patient[]=[]
-  isActive = false;
-  isConversation=false;
-  conv!:Con
+  @ViewChild('endOfChat')
+  endOfChat!: ElementRef;
+  scrollcounter=0
+  user2$!: Observable<ProfileUser | null>;
+  AllmyChats1$!: Observable<Chat[]>;
+  messages$: Message[]=[]
+  scrollContainer!: HTMLElement;
+  @ViewChild('chatArea')
+  chatArea!: ElementRef;
 
-  conversation!:Con
-  clickMeClicked: EventEmitter<void> = new EventEmitter<void>();
+  currentchat!:chatReq;
+  searchControl =""
+  messageControl = new FormControl('');
+  newMessage: string
+  scrollPos: number = 0;
+  chatListControl: FormControl = new FormControl([""]);
+  user!: ProfileUser;
+  status$!: string;
+  currentChat!:Chat
+  suggestedUsers:patientProfile[]=[]
+  loadmsgNumber=15
+  incall:string=""
+  unsubscribe$ = new Subject<void>();
+   userHaveCallID=""
+   patientList:patientProfile[]=[]
+  searchValue=""
+  cuuser!:Doctor
+  chatlist:chatReq[]=[]
+  constructor(
+    private elementRef: ElementRef,
+    private usersService: UsersService,
+    private presence: PresenceService,
+    private docService:DoctorServicesService,
+    private chatserv:DoctorChatService
+  ) {
+    this.docService.getMypatients().subscribe((k)=>{
+ this.patientList=k
+     
+    })
+    this.docService.doctor$.subscribe((k)=>{
+      this.cuuser=k
+      this.getAllchats()
+         })
+     this.newMessage=""
+          
 
-  constructor( private PatientService: patientService ){
-    
+   
   }
   ngOnInit(): void {
-    this.parseconversations()
-    this.resetActive()
- 
-    this.getconversations()
-  }
-
-  @HostListener('document:click', ['$event'])
-  resetActive(event?: MouseEvent) {
-
-    const clickedElement = event ? event.target as HTMLElement : null;
-    if (clickedElement && clickedElement.classList.contains('input-sugg')) {
-   
-
-      event?.stopPropagation();
-      this.clickMeClicked.emit();
-    
-    }else{
-     
-    this.isActive = false;
-    console.log("azd")
-    }
  
    
-   
-  }
-  parseconversations(){
 
-  }
-  focusSearch() {
-    const searchInput = document.getElementById('search') as HTMLInputElement;
-    searchInput.focus();
  
   }
-  suggestconversation(){
-    this.isActive = true;
-this.PatientService.getSuggestedPatients().subscribe(key=>{
-
-    this.suggestedPatient=key
-  
-
-
-  console.log(this.suggestedPatient)
-})
+  startcall(){
+    this.chatserv.ISpatientAvailatbil(this.currentchat.patientid).then((res)=>{
+      console.log(res)
+      if(res==true){
+        this.chatserv.starCall(this.currentchat).then((k)=>{
+          console.log(k)
+        })
+      }
+    })
+  }
+  getAllchats(){
+    this.chatserv.getMyAllchats(this.cuuser.id).then((res)=>{
+      this.chatlist=res
+      console.log(res)
+    })
 
   }
-
-  openconversation(id:number){
-    console.log(id)
-    this.isActive=false
-    this.isConversation=true
-     // Create a new message object
-     const newMessage: Message = {
-      
-      sender: 'YOUR_SENDER_ID',
-      content: "dsqd",
-      timestamp: new Date()
-    };
-    this.conversation["messages"].push(newMessage)
-  
-
-    // Save the new message to Firebase Realtime Database
-    const dbRef = firebase.database().ref(`Conversations/`+this.conversation["id"]+"/messages");
-    dbRef.update( this.conversation.messages);
-
-    
+  getmsgs(msg:any){
+console.log(msg)
+return []
   }
-  startConverstation(){
-     // Generate a unique ID based on participants and creation date
-     const participants = ["dqsd", "dasd"]; // Example participants
-     const createdAt = new Date(); // Example creation date
-     const id = participants.join('_') + '_' + createdAt.getTime().toString();
-   
-     // Reference the unique ID in the database
-     const dbRef = firebase.database().ref(`Conversations`);
-     const newPostKey = dbRef.push( 'Conversation').key
-
-     this.conversation = {
-       id:newPostKey,// Assign the generated ID to the conversation object
-       participants: participants,
-       createdAt: createdAt,
-       messages: [] // Initialize with an empty array if messages is undefined
-     };
-     const dbReff = firebase.database().ref(`Conversations/`+newPostKey);
-     // Save the conversation to the database
-     dbReff.update(  this.conversation   )
-   
-    
+  sendMessage(){
+    this.chatserv.sendMessage(this.currentchat,this.newMessage)
+    this.newMessage=""
   }
-  getconversations(){
-    // Create a reference to the "conversations" node
- // Create a reference to the "conversations" node
-  const conversationsRef = firebase.database().ref('Conversations');
-
-  // Query the database to find conversations where the participant has userid="aeaz"
-  conversationsRef.orderByChild('participants/0').equalTo('dasd').on('value', (snapshot) => {
-    // Handle the retrieved data
-          // Do something with the conversation data
-       
-    snapshot.forEach((conversationSnapshot) => {
-      const conversation = conversationSnapshot.val();
-      // Do something with the conversation data
-      console.log(conversation);
-    });
-  });
-  conversationsRef.orderByChild('participants/1').equalTo('dasd').on('value', (snapshot) => {
-    // Handle the retrieved data
-          // Do something with the conversation data
-       
-    snapshot.forEach((conversationSnapshot) => {
-      const conversation = conversationSnapshot.val();
-      // Do something with the conversation data
-      console.log(conversation);
-    });
-  });
-
-  }
+  getchatimg(cht:chatReq){
+    let img=""
+for(let p of this.patientList){
+if(p.id==cht.patientid){
+  img=p.profilePic
 }
+}
+return img
+  }
+  getchatname(cht:chatReq){
+    let img=""
+    for(let p of this.patientList){
+    if(p.id==cht.patientid){
+      img=p.name+' '+p.lastname
+    }
+    }
+    return img
+  }
+  createChat(us:patientProfile){
+  
+   this.chatserv.createChat(us.id,this.cuuser.id).then((k)=>{
+    this.chatserv.getChatById(k).subscribe((key)=>{
+      console.log( key)
+      this.currentchat=key!
+    })
+   
+
+   })
+  }
+  openChat(us:string){
+  
+    this.chatserv.createChat(us,this.cuuser.id).then((k)=>{
+     this.chatserv.getChatById(k).subscribe((key)=>{
+       console.log( key)
+       this.currentchat=key!
+     })
+    
+ 
+    })
+   }
+  searchUser(searchValue: string) {
+    this.suggestedUsers =[]
+   
+      this.suggestedUsers = this.patientList.filter(user =>
+        user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchValue.toLowerCase())||user.lastname.toLowerCase().includes(searchValue.toLowerCase())
+      ).slice(0, 5);
+      console.log(this.scrollPos);
+    
+    if(searchValue==""){
+      this.suggestedUsers =[]
+    }else{
+
+    }
+   
+  }
+  
+}
+
